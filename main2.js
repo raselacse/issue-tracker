@@ -20,23 +20,27 @@ function submitIssue(e) {
   fetchIssues();
   e.preventDefault();
 }
-
 const setStatusClosed = id => {
   const issues = JSON.parse(localStorage.getItem('issues'));
-  console.log(issues)
   const currentIssue = issues.filter(issue => issue.id == id);
   currentIssue[0].status = 'Closed';
   currentIssue[0].description = `<del>${currentIssue[0].description}</del>`;
   localStorage.setItem('issues', JSON.stringify(issues));
   fetchIssues();
 }
-
 const deleteIssue = (id) => {
   const issues = JSON.parse(localStorage.getItem('issues'));
   const remainingIssues = issues.filter(issue => issue.id == id )
   localStorage.removeItem('issues', JSON.stringify(remainingIssues));
-}
 
+  let items = document.getElementsByClassName("well")
+    for (let i = 0; i < items.length; i++) {
+      let item = items[i];
+        item.addEventListener("click",function(){
+          item.className = "d-none"
+        })
+    }
+}
 const fetchIssues = () => {
   const issues = JSON.parse(localStorage.getItem('issues'));
   const issuesList = document.getElementById('issuesList');
@@ -46,13 +50,13 @@ const fetchIssues = () => {
     const {id, description, severity, assignedTo, status} = issues[i];
 
     issuesList.innerHTML +=   `<div class="well">
-                              <h6>Issue ID: ${id} </h6>
-                              <p><span class="label label-info"> ${status} </span></p>
-                              <h3> ${description} </h3>
-                              <p><span class="glyphicon glyphicon-time"></span> ${severity}</p>
-                              <p><span class="glyphicon glyphicon-user"></span> ${assignedTo}</p>
-                              <a href="#" onclick="setStatusClosed(${id})" class="btn btn-warning">Close</a>
-                              <a href="#" onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
-                              </div>`;
+                                  <h6>Issue ID: ${id} </h6>
+                                  <p><span class="label label-info"> ${status} </span></p>
+                                  <h3> ${description} </h3>
+                                  <p><span class="glyphicon glyphicon-time"></span> ${severity}</p>
+                                  <p><span class="glyphicon glyphicon-user"></span> ${assignedTo}</p>
+                                  <a href="#" onclick="setStatusClosed(${id})" class="btn btn-warning">Close</a>
+                                  <a href="#" onclick="deleteIssue(${id})" class="btn btn-danger">Delete</a>
+                                </div>`;
   }
 }
